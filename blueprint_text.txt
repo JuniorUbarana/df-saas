@@ -1,0 +1,60 @@
+---
+
+## 1. Visão Geral do Produto
+O software será um **SaaS de Auditoria e Governança** focado no auditor. Ele não deve ser um "formulário infinito", mas sim um motor de geração de documentos baseado em lógica condicional e templates setoriais.
+
+### Diferenciais por Segmento (Regras de Negócio)
+* **Educação:** Foco no tratamento de dados de menores (Art. 14 da LGPD) e prontuários pedagógicos.
+* **Saúde:** Foco em dados sensíveis (Art. 5, II), integração com prontuários e hipótese de "Tutela da Saúde".
+* **Fitness:** Foco em dados biométricos, avaliações físicas e contratos de prestação de serviço.
+
+---
+
+## 2. Requisitos Funcionais (Módulos Core)
+
+### A. Módulo de Inventário e ROPA (Records of Processing Activities)
+* **Questionários Dinâmicos:** Em vez de campos em branco, o sistema oferece opções pré-moldadas para o setor (ex: "Finalidade: Matrícula Escolar", "Base Legal: Execução de Contrato").
+* **Mapeamento de Fluxo:** Visualização gráfica de onde o dado entra e por onde sai.
+* **Geração Automática de ROPA:** Exportação em PDF/Excel conforme os padrões da ANPD.
+
+### B. Gestão de Riscos e RIPD (DPIA)
+* **Matriz de Risco ISO 31000/27001:** Cálculo automático de Probabilidade x Impacto.
+* **Templates de RIPD:** Sugestão de medidas mitigadoras padrão para clínicas e academias (ex: criptografia de banco de dados de alunos).
+
+### C. Gerador de Documentos e Políticas
+* **Motor de Templates:** Criação de Políticas de Privacidade, Termos de Uso e Acordos de Confidencialidade (NDA) usando variáveis coletadas no inventário.
+* **Gestão de Versões:** Histórico de alterações em cada documento gerado para o cliente.
+
+### D. Módulo de Auditoria e Checklist ISO 27701
+* **Checklist de Conformidade:** Verificação dos controles da ISO 27701 segmentados por domínio.
+* **Repositório de Evidências:** Upload de fotos, prints e documentos que comprovam a adequação (ex: foto do armário de prontuários trancado na clínica).
+
+---
+
+## 3. Requisitos Não Funcionais (Qualidade e Segurança)
+
+* **Segurança (Data at Rest/Motion):** Criptografia AES-256 para documentos dos clientes.
+* **Multi-tenancy Isolado:** Garantia de que os dados de uma escola jamais "vazem" para o ambiente de uma clínica.
+* **Alta Disponibilidade:** SLA de 99.9%, considerando que o auditor estará em campo (cliente) e precisa de acesso via tablet/mobile.
+* **Usabilidade (UX):** Interface "Clean" para evitar a fadiga do auditor. Menos cliques, mais contexto.
+
+---
+
+## 4. Regras de Negócio Cruciais
+
+1.  **Herança de Conhecimento:** Ao iniciar uma nova auditoria em uma "Academia", o sistema deve sugerir os processos comuns de academias já auditadas, economizando 60% do tempo de preenchimento.
+2.  **Validação de Base Legal:** O sistema não deve permitir salvar um processo de tratamento sem uma base legal válida (Art. 7 ou Art. 11).
+3.  **Alerta de Dados de Menores:** Se o setor for "Educação", o sistema deve obrigatoriamente exigir a verificação do consentimento de um dos pais/responsável.
+
+---
+
+## 5. Comparativo de Mercado (O que evitar)
+
+| Recurso | Softwares Comuns (DPONet/Modus) | Seu Software (Auditor-Centric) |
+| :--- | :--- | :--- |
+| **Foco** | Auto-atendimento do cliente | Produtividade do Consultor/Auditor |
+| **Personalização** | Genérica | Especializada (Educação/Saúde/Fitness) |
+| **Evidências** | Muitas vezes apenas textual | Repositório estruturado de provas para auditoria |
+| **Curva de Aprendizado** | Média (exige que o cliente aprenda) | Baixa (o auditor já domina o framework) |
+
+---
