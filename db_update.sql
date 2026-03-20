@@ -1,9 +1,13 @@
--- 1. Adicionar o campo WhatsApp na tabela profiles
+-- Como o aplicativo é para uso EXCLUSIVO dos funcionários / auditores internos da DataFacil Compliance,
+-- e nós já bloqueamos a criação de contas por pessoas externas, 
+-- NÃO há necessidade de regras complexas de isolamento de banco de dados (RLS) entre os seus próprios usuários.
+
+-- 1. Garante que os perfis tenham o campo Whatsapp que nós adicionamos
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS whatsapp TEXT;
 
--- 2. Corrigir a política de SELECT da tabela tenants.
--- O erro ocorre porque no momento que você insere o tenant, o Supabase tenta ler a linha inserida,
--- mas a política antiga exigia que o usuário já tivesse um perfil criado no banco vinculado a ele.
--- Essa alteração permite simplesmente a leitura dos tenants pelo usuário autenticado.
-DROP POLICY IF EXISTS "Permitir select no proprio tenant" ON public.tenants;
-CREATE POLICY "Permitir select no proprio tenant" ON public.tenants FOR SELECT TO authenticated USING (true);
+-- 2. Desliga todos os bloqueios (RLS) das tabelas principais da aplicação
+-- Isso permitirá que qualquer Auditor da DataFacil (com login) crie clientes, perfis e auditorias livremente.
+ALTER TABLE public.profiles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audits DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.inventories DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.risks DISABLE ROW LEVEL SECURITY;

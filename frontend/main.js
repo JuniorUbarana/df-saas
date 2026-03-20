@@ -22,7 +22,6 @@ const setupModal = document.getElementById('setup-modal');
 const setupForm = document.getElementById('setup-form');
 const profileNameInput = document.getElementById('profile-name');
 const profileWhatsappInput = document.getElementById('profile-whatsapp');
-const tenantNameInput = document.getElementById('tenant-name');
 const auditsContainer = document.getElementById('audits-container');
 const auditsEmpty = document.getElementById('audits-empty');
 const btnNewAudit = document.getElementById('btn-new-audit');
@@ -241,16 +240,20 @@ logoutBtn.addEventListener('click', async () => {
 
 setupForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const tName = tenantNameInput.value;
   const pName = profileNameInput.value;
   const pWhat = profileWhatsappInput.value;
   const btn = document.getElementById('setup-submit-btn');
   btn.disabled = true;
-  btn.textContent = 'Criando...';
+  btn.textContent = 'Configurando...';
 
   try {
-    const { data: tenant, error: tErr } = await supabase.from('tenants').insert({ name: tName }).select().single();
-    if (tErr) throw tErr;
+    let { data: tenant } = await supabase.from('tenants').select('*').eq('name', 'DataFacil Compliance').maybeSingle();
+    
+    if (!tenant) {
+      const { data: newTenant, error: tErr } = await supabase.from('tenants').insert({ name: 'DataFacil Compliance' }).select().single();
+      if (tErr) throw tErr;
+      tenant = newTenant;
+    }
 
     const { error: pErr } = await supabase.from('profiles').insert({
       id: currentUser.id,
@@ -263,9 +266,9 @@ setupForm.addEventListener('submit', async (e) => {
     setupModal.classList.add('hidden');
     await checkProfile();
   } catch(err) {
-    alert('Erro ao criar ambiente: ' + err.message);
+    alert('Erro ao configurar perfil: ' + err.message);
     btn.disabled = false;
-    btn.textContent = 'Criar Ambiente';
+    btn.textContent = 'Concluir';
   }
 });
 
